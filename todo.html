@@ -22,7 +22,7 @@
 
      #header {
        display: table;
-       height: 8%;
+       height: 10%;
        text-align: center;
      }
 
@@ -34,7 +34,7 @@
      }
 
       #body {
-        height: 84%;
+        height: 82%;
       }
 
       ul {
@@ -58,6 +58,8 @@
         display: table-cell;
         vertical-align: middle;
         font-size: 0.8em;
+
+        
       }
 
       ul li span::before {
@@ -146,7 +148,7 @@
       <span>TODO</span>
     </section>
     <section id="body">
-      <ul>
+      <ul id="todo-list">
         <li><span>asd asd</span></li>
         <li><span>asd</span></li>
       </ul>
@@ -156,5 +158,26 @@
       <span class="underline"></span>
       <button><span id="plus">&plus;</span></button>
     </section>
+
+
+    <script type="text/javascript">
+      var todoList = document.getElementById('todo-list');
+      var lis = document.getElementsByTagName('li');
+      var btn = document.querySelector('button');
+      var input = document.getElementById('todo');
+
+      btn.addEventListener('click', function() {
+        var userInput = input.value;
+        var li = document.createElement('LI');
+        var span = document.createElement('SPAN');
+        var output = document.createTextNode(userInput);
+
+        span.appendChild(output);
+        li.appendChild(span);
+        todoList.appendChild(li);
+
+        input.value="";
+      });
+    </script>
   </body>
 </html>
