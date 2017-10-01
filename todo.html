@@ -65,12 +65,12 @@
         opacity: 1;
       }
 
-      ul li:hover {
+      ul li:hover{
         opacity: 0.5;
         transition: 0.4s;
       }
 
-      ul li:hover::after {
+      ul li:hover::after{
         content: '';
         position: absolute;
         border-color: #fff;
@@ -97,7 +97,6 @@
         content: "//";
         left: 5%;
       }
-
 
       #input {
         width: 100%;
@@ -168,6 +167,10 @@
       button:focus {
         outline: none;
       }
+
+      .checked {
+        color: white;
+      }
     </style>
   </head>
   <body>
@@ -210,8 +213,15 @@
           li.className = "slide";
         });
         input.value="";
-        lis = document.getElementsByTagName('li');
       });
+
+        var ul = document.querySelector('ul');
+        ul.addEventListener('click', function(ev) {
+          if(ev.target.tagName === "SPAN") {
+            ev.target.parentElement.classList.toggle('checked');
+          }
+        });
+
     </script>
   </body>
 </html>
