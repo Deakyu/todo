@@ -44,6 +44,11 @@
         height: 100%;
         text-align: center;
         list-style: none;
+        overflow-y: auto;
+      }
+
+      #todo-list::-webkit-scrollbar {
+        display: none;
       }
 
       ul li {
@@ -66,11 +71,13 @@
       }
 
       ul li:hover{
+        box-shadow: inset 0 0 1px 1px #C678DD;
         opacity: 0.5;
         transition: 0.4s;
       }
 
-      ul li:hover::after{
+      ul li.checked::after {
+      /*ul li:hover::after, ul li.checked::after{*/
         content: '';
         position: absolute;
         border-color: #fff;
@@ -82,6 +89,10 @@
         height: 0.6em;
         width: 0.3em;
         transition: all 0.4s linear;
+      }
+
+      ul li.checked:hover::after {
+        /*display: none;*/
       }
 
       ul li span {
@@ -96,6 +107,32 @@
         position: absolute;
         content: "//";
         left: 5%;
+      }
+
+      .checked {
+        width: 90%;
+        color: gray;
+        text-decoration: line-through;
+      }
+
+      ul li.checked span::before {
+        content: 'o';
+      }
+
+      .close {
+        margin: 0;
+        padding: 0;
+        width: 10%;
+        height: 100%;
+        position: absolute;
+        right: -11%;
+        background: white;
+        color: black;
+      }
+
+      .close:hover {
+        border-radius: 25px;
+        transition: 0.4s linear;
       }
 
       #input {
@@ -167,10 +204,6 @@
       button:focus {
         outline: none;
       }
-
-      .checked {
-        color: white;
-      }
     </style>
   </head>
   <body>
@@ -211,16 +244,34 @@
         todoList.appendChild(li);
         setTimeout(function() {
           li.className = "slide";
+        }, 10);
+          input.value="";
         });
-        input.value="";
+
+      var ul = document.querySelector('ul');
+      ul.addEventListener('click', function(ev) {
+        if(ev.target.tagName === "SPAN") {
+          ev.target.parentElement.classList.toggle('checked');
+
+          var liChecked = ev.target.parentElement.classList.contains('checked');
+          // Create close button
+          if(liChecked) {
+            var button = document.createElement('button');
+            var x = document.createTextNode("\u00D7");
+            button.appendChild(x);
+            button.classList = "close";
+            button.addEventListener('click', function(ev) {
+              // list removing animation ??
+            });
+            ev.target.parentElement.appendChild(button);
+          } else {
+            var xButton = ev.target.parentElement.querySelector('.close');
+            xButton.remove();
+          }
+        }
       });
 
-        var ul = document.querySelector('ul');
-        ul.addEventListener('click', function(ev) {
-          if(ev.target.tagName === "SPAN") {
-            ev.target.parentElement.classList.toggle('checked');
-          }
-        });
+
 
     </script>
   </body>
