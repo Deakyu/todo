@@ -76,8 +76,8 @@
         transition: 0.4s;
       }
 
+      /* Check mark */
       ul li.checked::after {
-      /*ul li:hover::after, ul li.checked::after{*/
         content: '';
         position: absolute;
         border-color: #fff;
@@ -89,10 +89,6 @@
         height: 0.6em;
         width: 0.3em;
         transition: all 0.4s linear;
-      }
-
-      ul li.checked:hover::after {
-        /*display: none;*/
       }
 
       ul li span {
@@ -119,6 +115,7 @@
         content: 'o';
       }
 
+      /* Close Button next to corresponding list */
       .close {
         margin: 0;
         padding: 0;
@@ -135,6 +132,7 @@
         transition: 0.4s linear;
       }
 
+      /* List Removing Effect */
       ul>li.checked.remove{
         width: 0;
         height: 0;
@@ -166,11 +164,14 @@
         font-family: Inconsolata, Monaco, Consolas, 'Courier New', Courier;
         font-size: 0.8em;
         font-weight: bold;
+
+        /* Input cursor, text stylings 1 */
         color: #C678DD;
         text-shadow: 0px 0px 0px #C678DD;
         -webkit-text-fill-color: transparent;
       }
 
+      /* Input cursor, text stylings 2 */
       input::-webkit-input-placeholder {
         color: rgba(255, 255, 255, 0.2);
         text-shadow: none;
@@ -187,6 +188,7 @@
         transform: scale(1);
       }
 
+      /* Underline style for input field */
       .underline {
         background-color: #C678DD;
         display: inline-block;
@@ -201,6 +203,7 @@
         width: 75%;
       }
 
+      /* plus button styling */
       button {
         font-size: 1.2em;
         font-weight: bold;
@@ -234,12 +237,14 @@
       var btn = document.querySelector('button');
       var input = document.getElementById('todo');
 
+      // Enables return key to add a list without clicking
       input.onkeypress = function(e) {
         if(e.keyCode == 13) {
           btn.click();
         }
       }
 
+      // creates a new list
       btn.addEventListener('click', function() {
         var userInput = input.value;
         var li = document.createElement('LI');
@@ -249,27 +254,33 @@
         span.appendChild(output);
         li.appendChild(span);
         todoList.appendChild(li);
+
+        // for slide effect
         setTimeout(function() {
           li.className = "slide";
         }, 10);
-          input.value="";
-        });
 
+        // clear input after adding new list
+        input.value="";
+      });
+
+      // check list that are done, and/or remove the list
       var ul = document.querySelector('ul');
       ul.addEventListener('click', function(ev) {
         if(ev.target.tagName === "SPAN") {
           ev.target.parentElement.classList.toggle('checked');
 
+          // Create close button when a list is done
           var liChecked = ev.target.parentElement.classList.contains('checked');
-          // Create close button
           if(liChecked) {
             var button = document.createElement('button');
             var x = document.createTextNode("\u00D7");
             button.appendChild(x);
             button.classList = "close";
             button.addEventListener('click', function(ev) {
-              // list removing animation ??
+              // list removing animation
               this.parentElement.classList += " remove";
+              // Fully remove the list after animation is over
               setTimeout(() => {
                 this.parentElement.remove();
               }, 400);
