@@ -1,5 +1,10 @@
 <!DOCTYPE html>
 <html>
+  <!-- 
+    TODO
+    -Think about the x button most readable now
+    -what does the check figure do? it's right next to the close button
+  -->
   <head>
     <meta charset="utf-8">
     <title>To Do List</title>
@@ -76,21 +81,6 @@
         transition: 0.4s;
       }
 
-      /* Check mark */
-      ul li.checked::after {
-        content: '';
-        position: absolute;
-        border-color: #fff;
-        border-style: solid;
-        border-width: 0 4px 4px 0;
-        top: 0.4em;
-        right: 5%;
-        transform: rotate(45deg);
-        height: 0.6em;
-        width: 0.3em;
-        transition: all 0.4s linear;
-      }
-
       ul li span {
         position: relative;
         width: 100%;
@@ -112,24 +102,71 @@
       }
 
       ul li.checked span::before {
-        content: 'o';
+        content: '';
+        position: absolute;
+        border-color: #fff;
+        border-style: solid;
+        border-width: 0 4px 4px 0;
+        top: 0.4em;
+        transform: rotate(45deg);
+        height: 0.6em;
+        width: 0.3em;
+        transition: all 0.4s linear;
       }
 
-      /* Close Button next to corresponding list */
-      .close {
-        margin: 0;
-        padding: 0;
+      .wrapper {
+        margin:0;
+        padding:0;
         width: 10%;
         height: 100%;
         position: absolute;
         right: -11%;
-        background: white;
-        color: black;
       }
 
-      .close:hover {
-        border-radius: 25px;
-        transition: 0.4s linear;
+      .close {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        position: relative;
+        transform-style: preserve-3d;
+        transition: 0.5s;
+      }
+
+      .close:before {
+        content: attr(title);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #fff;
+        color: #000;
+        transition: 0.5s;
+        transform-origin: right;
+        transform: translateX(-100%) rotateY(90deg);
+      }
+
+      .close:after {
+        content: attr(title);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        color: #fff;
+        transition: 0.5s;
+        transform-origin: left;
+        transform: translateX(0) rotateY(0deg);
+      }
+
+      .close:hover:before {
+        transform: translateX(0) rotateY(0deg);
+      }
+
+      .close:hover:after {
+        transform: translateX(100%) rotateY(90deg);
       }
 
       /* List Removing Effect */
@@ -273,19 +310,26 @@
           // Create close button when a list is done
           var liChecked = ev.target.parentElement.classList.contains('checked');
           if(liChecked) {
+            // ---
+            var wrapper = document.createElement('div');
+            wrapper.classList = "wrapper";
+            // ---
+
             var button = document.createElement('button');
-            var x = document.createTextNode("\u00D7");
+            var x = document.createTextNode("");
             button.appendChild(x);
+            button.setAttribute("title", "x");
             button.classList = "close";
             button.addEventListener('click', function(ev) {
               // list removing animation
-              this.parentElement.classList += " remove";
+              this.parentElement.parentElement.classList += " remove";
               // Fully remove the list after animation is over
               setTimeout(() => {
-                this.parentElement.remove();
+                this.parentElement.parentElement.remove();
               }, 400);
             });
-            ev.target.parentElement.appendChild(button);
+            wrapper.appendChild(button);
+            ev.target.parentElement.appendChild(wrapper);
           } else {
             var xButton = ev.target.parentElement.querySelector('.close');
             xButton.remove();
